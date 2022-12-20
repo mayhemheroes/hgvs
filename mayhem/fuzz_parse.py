@@ -17,8 +17,7 @@ def TestOneInput(data):
     try:
         if fdp.ConsumeBool():
             with fdp.ConsumeMemoryFile(all_data=True, as_bytes=False) as ref_f:
-                trans = pyhgvs_utils.read_transcripts(ref_f)
-                pyhgvs.cdna_to_genomic_coord(trans, )
+                pyhgvs_utils.read_transcripts(ref_f)
         else:
             with fdp.ConsumeTemporaryFile('.fa', all_data=False, as_bytes=True) as fasta_name, pyfaidx.Fasta(fasta_name) as fa:
                 pyhgvs.parse_hgvs_name(fdp.ConsumeRandomString(), fa)
