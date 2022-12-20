@@ -17,7 +17,8 @@ def TestOneInput(data):
     try:
         if fdp.ConsumeBool():
             with fdp.ConsumeMemoryFile(all_data=True, as_bytes=False) as ref_f:
-                pyhgvs_utils.read_transcripts(ref_f)
+                trans = pyhgvs_utils.read_transcripts(ref_f)
+                pyhgvs.cdna_to_genomic_coord(trans, )
         else:
             with fdp.ConsumeTemporaryFile('.fa', all_data=False, as_bytes=True) as fasta_name, pyfaidx.Fasta(fasta_name) as fa:
                 pyhgvs.parse_hgvs_name(fdp.ConsumeRandomString(), fa)
@@ -29,6 +30,10 @@ def TestOneInput(data):
         return -1
     except ValueError as e:
         if 'columns' in str(e) or 'literal' in str(e) or 'Duplicate key' in str(e):
+            return -1
+        raise
+    except TypeError as e:
+        if 'concatenate' in str(e):
             return -1
         raise
 
